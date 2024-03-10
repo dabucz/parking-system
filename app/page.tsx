@@ -133,6 +133,7 @@ export default function Home() {
               selected={date}
               onSelect={setListingDate}
               initialFocus
+              ISOWeek
             />
           </PopoverContent>
         </Popover>
