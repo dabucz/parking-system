@@ -1,3 +1,3 @@
 import PocketBase from 'pocketbase';
 
-export const pb = new PocketBase('http://dabu.cz:8090');
+export const pb = new PocketBase('https://db.dabu.cz');
