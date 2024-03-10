@@ -2,7 +2,6 @@
 
 import { pb } from '@/app/lib/db';
 import { useEffect, useState } from 'react';
-import { navigate } from '@/app/actions'
 import {
   Card,
   CardContent,
@@ -32,7 +31,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { RecordModel } from 'pocketbase';
-
+import Navbar from '@/app/components/navbar'
 export default function Home() {
   pb.autoCancellation(false);
   const [data, setData] = useState<RecordModel[]>([]);
@@ -188,50 +187,5 @@ export default function Home() {
       ))}
       </div>
     </main>
-  );
-}
-
-interface oauthModel {
-  provider: string;
-}
-
-function Navbar() {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [oauthData,setOauthData] = useState<oauthModel[]>([]);
-  const authGoogle = async () => {
-    const authData = await pb.collection('users').authWithOAuth2({ provider: 'google' });
-  }
-
-  const authTypes = async () => {
-    const result = await pb.collection('users').listExternalAuths(pb.authStore.model?.id);
-    setOauthData(result);
-  }
-
-  useEffect(() => {
-    setIsLoaded(true);
-    if (pb.authStore.isValid) {
-      authTypes();
-    }
-  }, []);
-  if (!isLoaded) {
-    return <>Loading</>
-  }
-  return (
-    <div className="flex flex-row justify-between gap-4 px-4 border-b-2 p-4">
-      {pb.authStore.isValid ? (
-        <>
-          <div className="flex gap-4">
-          {!oauthData.some(item => item.provider === 'google') && (
-            <button onClick={authGoogle}>Connect Google</button>
-          )}
-          </div>
-          <div>
-            <button onClick={() => { pb.authStore.clear(); navigate("/account/login"); }}>Logout</button>
-          </div>
-        </>
-      ) : (
-        <button onClick={() => { navigate("/account/login"); }}>Login</button>
-      )}
-    </div>
   );
 }
