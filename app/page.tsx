@@ -198,9 +198,6 @@ interface oauthModel {
 function Navbar() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [oauthData,setOauthData] = useState<oauthModel[]>([]);
-  const authDiscord = async () => {
-    const authData = await pb.collection('users').authWithOAuth2({ provider: 'discord' });
-  }
   const authGoogle = async () => {
     const authData = await pb.collection('users').authWithOAuth2({ provider: 'google' });
   }
@@ -226,9 +223,6 @@ function Navbar() {
           <div className="flex gap-4">
           {!oauthData.some(item => item.provider === 'google') && (
             <button onClick={authGoogle}>Connect Google</button>
-          )}
-          {!oauthData.some(item => item.provider === 'discord') && (
-            <button className="hover:" onClick={authDiscord}>Connect Discord</button>
           )}
           </div>
           <div>
